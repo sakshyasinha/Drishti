@@ -1,0 +1,142 @@
+// Full Next.js 13+ (App Router) codebase for Drishti AI Dashboard
+
+// File: src/app/page.tsx
+'use client';
+import { useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+export default function HomePage() {
+  const [incidentType, setIncidentType] = useState('');
+
+  return (
+    <main className="p-6 space-y-10 text-gray-900">
+      <header>
+        <h1 className="text-3xl font-bold mb-2">Drishti AI Dashboard</h1>
+        <nav className="flex flex-wrap gap-4 text-blue-600 font-medium">
+          <a href="#">Bottleneck Prediction</a>
+          <a href="#">Situational Summaries</a>
+          <a href="#">Anomaly Detection</a>
+          <a href="#">Lost & Found</a>
+          <a href="#">Incident Reporting</a>
+        </nav>
+      </header>
+
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card title="Active Incidents" value="3" note="+2 since last hour" />
+        <Card title="Predicted Bottlenecks" value="5" note="In the next 30 minutes" />
+        <Card title="Missing Persons" value="1" note="Open case" />
+        <Card title="Security Summaries" value="7" note="Generated today" />
+      </section>
+
+      <section className="bg-gray-100 rounded-xl p-4">
+        <h2 className="text-xl font-semibold mb-2">Event Overview</h2>
+        <div className="bg-white border border-gray-300 rounded-md p-4 text-sm text-gray-600 text-center">
+          <p>Map Unavailable</p>
+          <p className="mt-1">A Google Maps API Key is not configured.</p>
+          <p>Set <code className="bg-gray-200 px-1">NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> in your environment file.</p>
+        </div>
+      </section>
+
+      <Section title="Predictive Bottleneck Analysis" description="Analyze video feeds and crowd data to predict potential bottlenecks.">
+        <div className="grid gap-4">
+          <Label>Video Feed</Label>
+          <Input type="file" />
+
+          <Label>Current Crowd Density</Label>
+          <Input placeholder="e.g., High" />
+
+          <Label>Current Crowd Velocity</Label>
+          <Input placeholder="e.g., Slow" />
+
+          <Label>Current Crowd Flow</Label>
+          <Input placeholder="e.g., Converging" />
+
+          <Button className="mt-2">Predict Bottlenecks</Button>
+        </div>
+      </Section>
+
+      <Section title="AI-Powered Situational Summaries" description="Fuse alerts from various sources into a concise, actionable briefing.">
+        <div className="grid gap-4">
+          <Label>Zone</Label>
+          <Input placeholder="e.g., West Zone" />
+
+          <Label>Alerts (one per line)</Label>
+          <Textarea placeholder="- Suspicious package...
+- Minor scuffle...
+- Social media chatter..." rows={5} />
+
+          <Button className="mt-2">Generate Summary</Button>
+        </div>
+      </Section>
+
+      <Section title="Multimodal Anomaly Detection" description="Scan live feeds for anomalies like smoke, fire, or surges.">
+        <div className="grid gap-4">
+          <Label>Live Video Feed</Label>
+          <Input type="file" />
+          <Button className="mt-2">Detect Anomalies</Button>
+        </div>
+      </Section>
+
+      <Section title="AI-Powered Lost & Found" description="Photo matching to scan feeds for a missing person.">
+        <div className="grid gap-4">
+          <Label>Missing Person's Photo</Label>
+          <Input type="file" />
+
+          <Label>Live Event Feed Photo</Label>
+          <Input type="file" />
+
+          <Button className="mt-2">Find Person</Button>
+        </div>
+      </Section>
+
+      <Section title="Incident Reporting" description="Report medical emergencies or security concerns.">
+        <div className="grid gap-4">
+          <Label>Incident Type</Label>
+          <Select onValueChange={setIncidentType}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select an incident type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="medical">Medical Emergency</SelectItem>
+              <SelectItem value="security">Security Concern</SelectItem>
+              <SelectItem value="lost">Lost Item</SelectItem>
+              <SelectItem value="other">Other</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Label>Location</Label>
+          <Input placeholder="e.g., Near main stage, left side" />
+
+          <Label>Description</Label>
+          <Textarea placeholder="Describe the incident..." rows={4} />
+
+          <Button className="mt-2">Submit Report</Button>
+        </div>
+      </Section>
+    </main>
+  );
+}
+
+function Card({ title, value, note }: { title: string; value: string; note: string }) {
+  return (
+    <div className="bg-white shadow rounded-xl p-4">
+      <h3 className="text-sm text-gray-500">{title}</h3>
+      <p className="text-2xl font-bold text-gray-800">{value}</p>
+      <p className="text-xs text-gray-500">{note}</p>
+    </div>
+  );
+}
+
+function Section({ title, description, children }: { title: string; description: string; children: React.ReactNode }) {
+  return (
+    <section className="border-t pt-6">
+      <h2 className="text-xl font-semibold mb-1">{title}</h2>
+      <p className="text-sm text-gray-600 mb-4">{description}</p>
+      {children}
+    </section>
+  );
+}
